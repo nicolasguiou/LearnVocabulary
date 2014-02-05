@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="LearnVocabulary">
+    <configurations>
+      <configuration name="LearnVocabulary" target-platform="Mobile" main-class="LearnVocabulary" output-file="LearnVocabulary.swf" output-folder="$MODULE_DIR$/bin-debug">
+        <dependencies>
+          <entries>
+            <entry library-id="afc67399-d84e-4757-94fb-6bd3a67c809f">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="4.10.0" />
+        </dependencies>
+        <compiler-options>
+          <map>
+            <entry key="compiler.locale" value="de_DE&#10;en_US&#10;es_ES&#10;fr_FR&#10;it_IT" />
+          </map>
+          <option name="additionalOptions" value="-source-path=locale/{locale}" />
+        </compiler-options>
+        <packaging-air-desktop />
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/LearnVocabulary-app.xml" package-file-name="LearnVocabulary">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/StyleComponents.css" path-in-package="StyleComponents.css" />
+          </files-to-package>
+        </packaging-android>
+        <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/LearnVocabulary-app.xml" package-file-name="LearnVocabulary">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/StyleComponents.css" path-in-package="StyleComponents.css" />
+          </files-to-package>
+        </packaging-ios>
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/locale" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="4.10.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="afc67399-d84e-4757-94fb-6bd3a67c809f" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+
