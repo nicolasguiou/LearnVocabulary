@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   creationComplete="windowedapplication1_creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.guiou.dropBoxCom.CommunicationDropBox;
+			import com.guiou.dropBoxCom.DropBoxCom;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.printing.FlexPrintJob;
+			import mx.printing.FlexPrintJobScaleType;
+			import mx.utils.Base64Decoder;
+			
+			import utils.ParseText;
+			
+//			private var db:DropBoxCom;
+			
+			private var allVoc:String;
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var print:FlexPrintJob = new FlexPrintJob();
+				
+				print.start();
+				
+				dgVocabulary.getItemIndicesInView();
+				
+				print.addObject(dgVocabulary, FlexPrintJobScaleType.NONE);
+				
+				print.send();
+			}
+			
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// read file
+				var file:File = File.applicationDirectory;
+				file = file.resolvePath("./utils/voca.txt");
+				
+				var stream:FileStream = new FileStream();
+				stream.open(file, FileMode.READ);
+				
+				var str:String = stream.readUTFBytes(stream.bytesAvailable);
+				stream.close();
+				
+				allVoc = str;
+				
+				var jsonString:String = ParseText.parseTextToJSON(str);
+				//				trace(jsonString);
+				
+				var object:Object = JSON.parse( jsonString );
+				var array:Array = object.words as Array;
+				
+				var dataProvider:ArrayCollection = new ArrayCollection(array);
+				
+				dgVocabulary.dataProvider = dataProvider;
+			}
+			
+//			private function onURLDBHandler(event:DataEvent):void
+//			{
+//				currentState = "DB";
+//				
+//				html.location = event.data;
+//				html.addEventListener(Event.LOCATION_CHANGE,test1);
+//				html.addEventListener(Event.COMPLETE,test1);
+//			}
+//			
+//			private function test1(event:Event):void
+//			{
+//				//				trace ("html");
+//				
+//				if (event.target.location == "https://www.dropbox.com/1/oauth/authorize")
+//				{
+//					db.getAccess();
+//					
+//				}
+//				// si location change pour https://www.dropbox.com/1/oauth/authorize
+//				// alors suivre etape 3 de https://www.dropbox.com/developers/blog/20
+//				
+//			}
+//			
+//			private function onLoadDBHandler(event:Event):void
+//			{
+//				db = new DropBoxCom();
+//				db.writeFile();
+//				db.client.addEventListener("urlDB", onURLDBHandler);
+//			}
+			
+			private var communicationDropBox:CommunicationDropBox;
+			
+			private function onAccessDBHandler(event:Event):void
+			{
+				//				db.createFolder();
+				
+				communicationDropBox = new CommunicationDropBox();
+				communicationDropBox.client.addEventListener("urlDropBox", onDropBoxGetToken);
+			}
+			
+			private function onDropBoxGetToken(event:DataEvent):void
+			{
+				currentState = "DB";
+				
+				html.location = event.data;
+				html.addEventListener(Event.LOCATION_CHANGE,isAccessHandler);
+				html.addEventListener(Event.COMPLETE,isAccessHandler);
+			}
+			
+			private function isAccessHandler(event:Event):void
+			{
+				html.verticalScrollPosition = 300;
+				html.horizontalScrollPosition = 400;
+				
+				if (event.target.location == "https://www.dropbox.com/1/oauth/authorize")
+				{
+					communicationDropBox.getAccess();
+					communicationDropBox.client.addEventListener("DropBoxAccess", dropBoxAccessHandler)
+				}
+			}
+			
+			private function dropBoxAccessHandler(event:Event):void
+			{
+				currentState = "normal";
+			}
+			
+			private function writeFile():void
+			{
+				var str:String = "test file db in byte array";
+				
+				var byteData : ByteArray;
+				byteData = new ByteArray();
+				byteData.writeUTFBytes(allVoc);
+				
+				communicationDropBox.writeFile("ooo", "testVoc.txt", byteData);
+			}
+			
+			private function readFile():void
+			{
+				communicationDropBox.readFile("ooo/testVoc.txt");
+				communicationDropBox.client.addEventListener("getFileResult", dropBoxGetFileHandler);
+			}
+			
+			private function dropBoxGetFileHandler(event:DataEvent):void
+			{
+				trace(event.data);
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="DB"/>
+	</s:states>
+	
+	<s:HGroup top="5" gap="10">
+		
+		<s:Button label="PRINT" 
+				  click="button1_clickHandler(event)"/>
+		
+		<s:Button label="Access DB" 
+				  click="onAccessDBHandler(event)"/>
+		
+		<s:Button label="write" 
+				  horizontalCenter="40" top="5"
+				  click="writeFile()"/>
+		
+		<s:Button label="read" 
+				  horizontalCenter="120" top="5"
+				  click="readFile()"/>
+		
+	</s:HGroup>
+	
+	<s:Scroller width="300" height="70%"
+				horizontalCenter="0" verticalCenter="0"
+				includeIn="normal" >
+		
+		<s:DataGroup id="dgVocabulary"
+					 width="100%" height="100%"
+					 itemRenderer="com.guiou.vocabulary.ui.renderer.LVClassicWordItemRenderer"
+					 >
+			<s:layout>
+				<s:VerticalLayout gap="1" useVirtualLayout="false" />
+			</s:layout>
+		</s:DataGroup>
+	</s:Scroller>
+	
+	<mx:HTML id="html"
+			 width="100%" height="80%"
+			 bottom="0"
+			 includeIn="DB"/>
+	
+	
+</s:WindowedApplication>

@@ -1,0 +1,27 @@
+p2,1,category,new
+_____________,_____________,_____________,_____________
+να φάτε,à manger,-,true
+εστιατόριο,restaurant,-,true
+Θα ήθελα να,je voudrais,-,true
+θα θέλατε να,vous voudriez,-,true
+θα ήθελες να,tu voudrais,-,true
+να πιώ,à boire,-,true
+να πιείς,à boire,-,true
+να πιεί,à boire,-,false
+να πιούμε,à boire,-,true
+να πιείτε,à boire,-,true
+να πιούν,à boire,-,true
+να φάω,à manger,-,true
+να φας,à manger,-,true
+να φάει,à manger,-,true
+να φάμε,à manger,-,true
+να φάμε,à manger,-,true
+να φάνε,à manger,-,true
+ , ,-,true
+Ξενοδοχείο,hotel,-,true
+δίκαιο,droit,-,true
+κανονικά,normalement,-,true
+ποντίκι,souris,-,true
+μεσημεριανό,déjeuner,-,true
+δείπνο,dîner,-,true
+πρωινό,petit déjeuner,-,true

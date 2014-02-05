@@ -1,0 +1,51 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+
+
+.homeViewSkin
+{
+	skinClass: ClassReference("views.skins.HomeViewSkin");
+}
+
+.vocabularyViewSkin
+{
+	skinClass: ClassReference("views.skins.VocabularyViewSkin");
+}
+
+.exerciceViewSkin
+{
+	skinClass: ClassReference("views.skins.ExerciceViewSkin");
+}
+
+/* MENUS */
+.menuTranslationEditViewSkin
+{
+	skinClass: ClassReference("views.skins.MenuTranslationEditViewSkin");
+}
+
+.menuDictionaryViewSkin
+{
+	skinClass: ClassReference("views.skins.MenuDictionaryViewSkin");
+}
+
+.menuExerciceSettingsViewSkin
+{
+	skinClass: ClassReference("views.skins.MenuExerciceSettingsViewSkin");
+}
+
+/* COMPONENTS */
+
+.dividerBlack
+{
+   fillColors	: #000000,#000000,#000000;
+   fillRatios	: 0,127.5,255;
+   fillAlphas	: 0,1,0;
+}
+
+.dividerWhite
+{
+   fillColors	: #FFFFFF,#FFFFFF,#FFFFFF;
+   fillRatios	: 0,127.5,255;
+   fillAlphas	: 0,1,0;
+}
+

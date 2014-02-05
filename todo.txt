@@ -1,0 +1,31 @@
+To do :
+
+- translation all words in local files
+
+- communication with DropBox
+
+- implement slide effect to switch between views
+
+- tablet : menu button
+
+- set app vertically only
+
+- test app properly
+
+- add initial words (bonjour, maison, voiture, rue, manger, aider, parler, demander, corps, tete, main)
+
+
+
+- retrieve previous Database
+http://stackoverflow.com/questions/10296696/where-is-flex-mobile-application-app-storagedirectory-in-android-tablet
+
+http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/SharedObject.html
+
+/data/data/air.LearnVocabularyMobile/LearnVocabularyMobile/Local\ Store/
+
+
+exercise check logic for language property :
+ - settings should propose the correct code language
+ - import db should import the correct code language
+ - during the exercise do the correct mapping
+
