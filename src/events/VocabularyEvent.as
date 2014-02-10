@@ -9,7 +9,8 @@ package events
 		//  Properties
 		//--------------------------------------------------------------------------
 		public static const DISPLAY_TRANSLATION:String = "displayTranslation";
-		
+		public static const DISPLAY_FOLDER:String = "displayFolder";
+
 		public var data:*;
 		
 		

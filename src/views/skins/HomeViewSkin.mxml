@@ -100,7 +100,7 @@
 				  width="250" />
 		
 		<s:Button id="btAdd" 
-				  label="{LocalizationUtils.getString('HOME.Add')}"  
+				  label="{LocalizationUtils.getString('ADD')}"
 				  focusAlpha="0"
 				  width="250" />
 		
@@ -114,7 +114,7 @@
 				  verticalAlign="middle"
 				  horizontalAlign="left">
 			
-			<s:CheckBox id="chNewWord" label="Added as new word"
+			<s:CheckBox id="chNewWord" label="{LocalizationUtils.getString('ADDED_AS_NEW_WORD')}"
 						color="0xFFFFFF" 
 						selected="true"/>
 			
@@ -126,7 +126,7 @@
 							selected="true"/>
 				
 				<s:TextInput id="tiCategory" 
-							 prompt="Category"
+							 prompt="{LocalizationUtils.getString('CATEGORY')}"
 							 focusAlpha="0"
 							 width="280" />
 				

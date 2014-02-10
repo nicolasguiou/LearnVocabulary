@@ -246,7 +246,7 @@ package views
 					{type:"Only " + MappingIdString.getLanguage(vocabulary), data:vocabulary}, 
 					{type:"Random", data:-1}]);
 				
-				dpCategory = getAllCategories();
+				dpCategory = communicationDataBase.getAllCategories();
 				
 				var exerciceSettings:ExerciceSettingsVO;
 				exerciceSettings = communicationDataBase.getExerciceSetting();
@@ -267,38 +267,6 @@ package views
 			}
 		}
 		
-		private function getAllCategories():ArrayCollection
-		{
-			var result:ArrayCollection = new ArrayCollection();
-			var db:ArrayCollection = communicationDataBase.getDataBase();
-			var n:int = db.length;
-			var translation:TranslationVO;
-			var tmpCategory:String;
-			
-			for (var i:int = 0 ; i < n ; i++)
-			{
-				translation = new TranslationVO(db.getItemAt(i));
-				tmpCategory = translation.category;
-				
-				if (tmpCategory.indexOf(" ") != -1)
-				{
-					var tmpArrayOfCategory:Array = tmpCategory.split(" ");
-					
-					for (var j:int = 0; j < tmpArrayOfCategory.length; j++) 
-					{
-						if (result.contains(tmpArrayOfCategory[j]) == false)
-							result.addItem(tmpArrayOfCategory[j]);
-					}
-					
-				}
-				else if (result.contains(tmpCategory) == false)
-				{
-					result.addItem(tmpCategory);
-				}
-			}
-			
-			return result;
-		}
-		
+
 	}
 }

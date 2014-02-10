@@ -1,4 +1,6 @@
 package views.itemRenderers {
+import core.CommunicationDataBase;
+
 import events.VocabularyEvent;
 
 import flash.events.MouseEvent;
@@ -9,13 +11,14 @@ import mx.graphics.SolidColor;
 import spark.components.Group;
 import spark.components.Label;
 import spark.components.supportClasses.ItemRenderer;
+import spark.primitives.BitmapImage;
 import spark.primitives.Rect;
 
 import utils.Constants;
+import utils.EmbedAssets;
 
-import vo.TranslationVO;
 
-public class VocabularyItemRenderer extends ItemRenderer implements IDataRenderer {
+public class VocabularyFolderItemRenderer extends ItemRenderer implements IDataRenderer {
 
     //--------------------------------------------------------------------------
     //  Constants
@@ -27,18 +30,18 @@ public class VocabularyItemRenderer extends ItemRenderer implements IDataRendere
     //  Properties
     //--------------------------------------------------------------------------
     private var word1:Label = new Label();
-    private var word2:Label = new Label();
     private var grp:Group = new Group();
+    private var communicationDataBase:CommunicationDataBase;
 
 
-    private var _item:TranslationVO;
+    private var _item:Object;
     private var _itemDirty:Boolean;
 
-    public function get item():TranslationVO {
+    public function get item():Object {
         return _item;
     }
 
-    public function set item(value:TranslationVO):void {
+    public function set item(value:Object):void {
         if (_item == value) return;
 
         _item = value;
@@ -50,7 +53,7 @@ public class VocabularyItemRenderer extends ItemRenderer implements IDataRendere
     //--------------------------------------------------------------------------
     //  Constructor
     //--------------------------------------------------------------------------
-    public function VocabularyItemRenderer() {
+    public function VocabularyFolderItemRenderer() {
         super();
 
         this.addEventListener(MouseEvent.CLICK, onItemClickedHandler);
@@ -61,31 +64,25 @@ public class VocabularyItemRenderer extends ItemRenderer implements IDataRendere
     //  Overridden methods
     //--------------------------------------------------------------------------
     override public function set data(value:Object):void {
-        if (value && value is TranslationVO) {
+        if (value && value is Object) {
             super.data = value;
-            item = value as TranslationVO;
+            item = value as Object;
         }
     }
 
     override protected function createChildren():void {
         super.createChildren();
 
+        var img:BitmapImage = new BitmapImage();
+        img.source = EmbedAssets.FOLDER;
+        img.x = 10;
+        img.y = 20;
+
         word1.width = Constants.DEVICE_WIDTH / 2 - 10;
         word1.height = HEIGHT;
         word1.maxDisplayedLines = 1;
-        word1.setStyle("textAlign", "right");
+        word1.x = 50;
         word1.setStyle("verticalAlign", "middle");
-
-        word2.width = Constants.DEVICE_WIDTH / 2 - 10;
-        word2.height = HEIGHT;
-        word2.x = Constants.DEVICE_WIDTH / 2 + 10;
-        word2.maxDisplayedLines = 1;
-        word2.setStyle("verticalAlign", "middle");
-
-        // vertical middle line
-        var rect1:Rect = drawLine(false, HEIGHT - 2);
-        rect1.x = Constants.DEVICE_WIDTH / 2;
-        rect1.y = 1;
 
         // left line
         var rect2:Rect = drawLine(false, HEIGHT - 2);
@@ -107,9 +104,8 @@ public class VocabularyItemRenderer extends ItemRenderer implements IDataRendere
         rect5.x = Constants.DEVICE_WIDTH - 2;
         rect5.y = 1;
 
+        grp.addElement(img);
         grp.addElement(word1);
-        grp.addElement(word2);
-        grp.addElement(rect1);
         grp.addElement(rect2);
         grp.addElement(rect3);
         grp.addElement(rect4);
@@ -141,9 +137,15 @@ public class VocabularyItemRenderer extends ItemRenderer implements IDataRendere
     override protected function commitProperties():void {
         super.commitProperties();
 
-        if (_itemDirty && word1 && word2) {
-            word1.text = item.word1.word;
-            word2.text = item.word2.word;
+        if (_itemDirty && word1) {
+
+            communicationDataBase = new CommunicationDataBase();
+            var categoryLen:int = communicationDataBase.getCategory(item as String).length;
+
+            word1.text = item as String;
+            word1.text += " (";
+            word1.text += categoryLen.toString();
+            word1.text += ")";
 
             _itemDirty = false;
         }
@@ -158,7 +160,7 @@ public class VocabularyItemRenderer extends ItemRenderer implements IDataRendere
     //  Private methods
     //--------------------------------------------------------------------------
     private function onItemClickedHandler(event:MouseEvent):void {
-        dispatchEvent(new VocabularyEvent(VocabularyEvent.DISPLAY_TRANSLATION, this.item, true));
+        dispatchEvent(new VocabularyEvent(VocabularyEvent.DISPLAY_FOLDER, this.item, true));
     }
 
 }

@@ -29,3 +29,6 @@ exercise check logic for language property :
  - import db should import the correct code language
  - during the exercise do the correct mapping
 
+
+current :
+dropdownlist on voc view (all-folder-new)
