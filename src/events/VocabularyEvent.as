@@ -10,6 +10,7 @@ package events
 		//--------------------------------------------------------------------------
 		public static const DISPLAY_TRANSLATION:String = "displayTranslation";
 		public static const DISPLAY_FOLDER:String = "displayFolder";
+		public static const DISPLAY_BACK:String = "displayBack";
 
 		public var data:*;
 		

@@ -15,5 +15,8 @@ public class EmbedAssets {
     [Embed(source="/assets/stop.png")]
     public static var STOP:Class;
 
+    [Embed(source="/assets/back.png")]
+    public static var BACK:Class
+
 }
 }

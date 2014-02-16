@@ -12,7 +12,6 @@ import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
 import mx.collections.ArrayCollection;
-import mx.core.ClassFactory;
 import mx.events.FlexEvent;
 import mx.states.State;
 import mx.utils.Base64Decoder;
@@ -23,18 +22,15 @@ import spark.components.Image;
 import spark.components.Label;
 import spark.components.List;
 import spark.components.ViewMenuItem;
+import spark.events.IndexChangeEvent;
 
 import utils.EmbedAssets;
 import utils.LocalizationUtils;
 import utils.MappingIdString;
 import utils.TransitionUtils;
-
-import views.itemRenderers.VocabularyFolderItemRenderer;
-
-import views.itemRenderers.VocabularyItemRenderer;
+import utils.UserUtils;
 
 import vo.TranslationVO;
-import vo.WordVO;
 
 [SkinState("normal")]
 [SkinState("diaporama")]
@@ -193,12 +189,13 @@ public class VocabularyView extends BaseView {
             case listVoc :
                 listVoc.addEventListener(VocabularyEvent.DISPLAY_TRANSLATION, onDisplayTranslationHandler);
                 listVoc.addEventListener(VocabularyEvent.DISPLAY_FOLDER, onDisplayFolderHandler);
+                listVoc.addEventListener(VocabularyEvent.DISPLAY_BACK, onDisplayBackHandler);
                 break;
             case imgPlay :
                 imgPlay.addEventListener(MouseEvent.CLICK, onImgPlayHandler);
                 break;
             case ddlDisplay :
-                ddlDisplay.addEventListener(FlexEvent.VALUE_COMMIT, onDdlDisplayCommit);
+                ddlDisplay.addEventListener(IndexChangeEvent.CHANGE, onDdlDisplayCommit);
                 break;
         }
 
@@ -212,12 +209,13 @@ public class VocabularyView extends BaseView {
             case listVoc :
                 listVoc.removeEventListener(VocabularyEvent.DISPLAY_TRANSLATION, onDisplayTranslationHandler);
                 listVoc.removeEventListener(VocabularyEvent.DISPLAY_FOLDER, onDisplayFolderHandler);
+                listVoc.removeEventListener(VocabularyEvent.DISPLAY_BACK, onDisplayBackHandler);
                 break;
             case imgPlay :
                 imgPlay.removeEventListener(MouseEvent.CLICK, onImgPlayHandler);
                 break;
             case ddlDisplay :
-                ddlDisplay.removeEventListener(FlexEvent.VALUE_COMMIT, onDdlDisplayCommit);
+                ddlDisplay.removeEventListener(IndexChangeEvent.CHANGE, onDdlDisplayCommit);
                 break;
         }
     }
@@ -288,6 +286,7 @@ public class VocabularyView extends BaseView {
     }
 
     private function initListeners():void {
+        this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationCompleteHandler);
     }
 
     private function setLanguageVocabulary():void {
@@ -302,30 +301,41 @@ public class VocabularyView extends BaseView {
     }
 
     private function onDisplayFolderHandler(event:VocabularyEvent):void {
-        listVoc.itemRenderer = new ClassFactory(VocabularyItemRenderer);
         listVoc.dataProvider = communicationDataBase.getCategory(event.data);
+        listVoc.dataProvider.addItemAt(-1, 0);
+
+        saveLocation();
     }
 
     private function onDisplayTranslationHandler(event:VocabularyEvent):void {
+        saveLocation();
+
         navigator.pushView(MenuTranslationEditView, event.data, null, TransitionUtils.crossFadeTransition());
     }
 
-    private function onDdlDisplayCommit(event:FlexEvent):void {
+    private function onDdlDisplayCommit(event:IndexChangeEvent):void {
 
         switch (ddlDisplay.selectedItem.code) {
             case 1 : // All
-                listVoc.itemRenderer = new ClassFactory(VocabularyItemRenderer);
                 listVoc.dataProvider = communicationDataBase.getDataBase();
                 break;
             case 2 : // Folder
-                listVoc.itemRenderer = new ClassFactory(VocabularyFolderItemRenderer);
                 listVoc.dataProvider = communicationDataBase.getAllCategories();
                 break;
 //            case 3 : // New
-//                listVoc.itemRenderer = new ClassFactory(VocabularyItemRenderer);
+//                listVoc.itemRenderer = new ClassFactory(VItemRenderer);
 //                break;
         }
+
+        saveLocation();
     }
+
+    private function saveLocation():void {
+        // to keep the user with the same display after an pop out of this view
+        UserUtils.getInstance().vocabularyViewTabSelected = ddlDisplay.selectedIndex;
+        UserUtils.getInstance().vocabularyViewDpDisplayed = listVoc.dataProvider as ArrayCollection;
+    }
+
 
     private function menuClickedHanlder(event:MouseEvent):void {
         switch (event.currentTarget.id) {
@@ -375,7 +385,6 @@ public class VocabularyView extends BaseView {
             imgPlay.source = EmbedAssets.STOP;
             callLater(diaporama);
         }
-
     }
 
     private function diaporama():void {
@@ -390,6 +399,23 @@ public class VocabularyView extends BaseView {
         else {
             diaporama();
         }
+    }
+
+    private function onCreationCompleteHandler(event:FlexEvent):void {
+        this.removeEventListener(FlexEvent.CREATION_COMPLETE, onCreationCompleteHandler);
+
+        var tabSelected:int = UserUtils.getInstance().vocabularyViewTabSelected;
+
+        if (tabSelected != 0) {
+            ddlDisplay.selectedIndex = UserUtils.getInstance().vocabularyViewTabSelected;
+            listVoc.dataProvider = UserUtils.getInstance().vocabularyViewDpDisplayed;
+        }
+    }
+
+    private function onDisplayBackHandler(event:VocabularyEvent):void {
+        listVoc.dataProvider = communicationDataBase.getAllCategories();
+
+        saveLocation();
     }
 
 }

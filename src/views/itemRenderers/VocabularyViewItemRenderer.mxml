@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!--
+  Created by nico-dev on 16/02/2014.
+-->
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                click="clickHandler(event)"
+                height="80"
+                autoDrawBackground="true">
+
+
+    <fx:Script><![CDATA[
+        import events.VocabularyEvent;
+
+        import utils.EmbedAssets;
+        import utils.LocalizationUtils;
+
+        import vo.TranslationVO;
+
+        private var _item:TranslationVO;
+        private var _itemDirty:Boolean;
+
+        public function get item():TranslationVO {
+            return _item;
+        }
+
+        public function set item(value:TranslationVO):void {
+            _item = value;
+            _itemDirty = true;
+            invalidateProperties()
+        }
+
+        private var _folder:String;
+        private var _folderDirty:Boolean;
+
+        public function get folder():String {
+            return _folder;
+        }
+
+        public function set folder(value:String):void {
+            _folder = value;
+            _folderDirty = true;
+            invalidateProperties()
+        }
+
+        override public function set data(value:Object):void {
+            if (value != null) {
+                super.data = value;
+
+                if (value is TranslationVO) {
+                    item = value as TranslationVO;
+                    currentState = "vocabulary";
+                }
+                else if (value is String) {
+                    folder = value as String;
+                    currentState = "folder";
+                }
+                else // -1
+                    currentState = "back";
+            }
+        }
+
+        override protected function commitProperties():void {
+            super.commitProperties();
+
+            if (_itemDirty && lbWord1 && lbWord2) {
+                lbWord1.text = item.word1.word;
+                lbWord2.text = item.word2.word;
+
+                _itemDirty = false;
+            }
+
+            if (_folderDirty && lbWord1) {
+                lbWord1.text = folder;
+
+                _folderDirty = false;
+            }
+        }
+
+        private function clickHandler(event:MouseEvent):void {
+            if (currentState == "vocabulary")
+                dispatchEvent(new VocabularyEvent(VocabularyEvent.DISPLAY_TRANSLATION, this.item, true));
+            else if (currentState == "folder")
+                dispatchEvent(new VocabularyEvent(VocabularyEvent.DISPLAY_FOLDER, folder, true));
+            else if (currentState == "back")
+                dispatchEvent(new VocabularyEvent(VocabularyEvent.DISPLAY_BACK, null, true));
+        }
+        ]]></fx:Script>
+
+    <s:states>
+        <s:State name="vocabulary"/>
+        <s:State name="folder"/>
+        <s:State name="back"/>
+    </s:states>
+
+    <s:Rect width="100%" height="100%">
+        <s:fill>
+            <s:SolidColor color="0xFFFFFF"/>
+        </s:fill>
+        <s:stroke>
+            <s:Stroke color="0x000000" weight="1"/>
+        </s:stroke>
+    </s:Rect>
+
+    <s:HGroup width="100%" height="100%"
+              gap="10"
+              verticalAlign="middle"
+              paddingLeft.back="10"
+              paddingLeft.folder="10">
+
+        <s:BitmapImage excludeFrom="vocabulary"
+                       source.back="{EmbedAssets.BACK}"
+                       source.folder="{EmbedAssets.FOLDER}"/>
+
+        <s:Label id="lbWord1"
+                 width="100%" height="100%"
+                 text.back="{LocalizationUtils.getString('BACK')}"
+                 textAlign.vocabulary="right"
+                 textAlign="left"
+                 verticalAlign="middle"/>
+
+        <s:Rect width="1" height="100%"
+                includeIn="vocabulary">
+            <s:fill>
+                <s:SolidColor color="0x000000"/>
+            </s:fill>
+        </s:Rect>
+
+        <s:Label id="lbWord2"
+                 width="100%" height="100%"
+                 textAlign="left"
+                 verticalAlign="middle"
+                 includeIn="vocabulary"/>
+
+    </s:HGroup>
+
+</s:ItemRenderer>

@@ -20,7 +20,7 @@
             <fx:Array>
                 <fx:Object label="{LocalizationUtils.getString('ALL')}" code="1"/>
                 <fx:Object label="{LocalizationUtils.getString('FOLDER')}" code="2"/>
-                <fx:Object label="{LocalizationUtils.getString('NEW')}" code="3"/>
+                <!--<fx:Object label="{LocalizationUtils.getString('NEW')}" code="3"/>-->
             </fx:Array>
         </s:ArrayCollection>
 
@@ -50,8 +50,8 @@
     <s:DropDownList id="ddlDisplay"
                     labelField="label"
                     selectedIndex="0"
-                    horizontalCenter="-250" top="28"
-                    width="150"
+                    horizontalCenter="-200" top="28"
+                    width="110" height="40"
                     dataProvider="{dpDisplay}"/>
 
     <s:VGroup width="100%" height="100%"
@@ -80,7 +80,7 @@
         <s:List id="listVoc"
                 height="100%" width="100%"
                 borderVisible="false" contentBackgroundAlpha="0"
-                itemRenderer="views.itemRenderers.VocabularyItemRenderer"
+                itemRenderer="views.itemRenderers.VocabularyViewItemRenderer"
                 useVirtualLayout="true"
                 excludeFrom="diaporama"/>
 

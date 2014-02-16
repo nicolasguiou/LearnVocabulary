@@ -1,36 +1,35 @@
-package core {
+package utils {
+
+import mx.collections.ArrayCollection;
+
 import spark.managers.PersistenceManager;
 
-import vo.DictionaryVO;
-
 [Bindable]
-public class DataBase extends PersistenceManager {
+public class UserUtils extends PersistenceManager {
 
     //--------------------------------------------------------------------------
     //  Properties
     //--------------------------------------------------------------------------
-    private static var instance:DataBase;
+    private static var instance:UserUtils;
 
-    public var dbNb:String;
-    public var db:String;
-    public var dbLength:int;
-    public var dictionary:DictionaryVO;
+    public var vocabularyViewTabSelected:int = 0; // tab selected by the user for the display
+    public var vocabularyViewDpDisplayed:ArrayCollection;
 
     //--------------------------------------------------------------------------
     //  Constructor
     //--------------------------------------------------------------------------
-    public function DataBase(enforcer:SingletonEnforcer) {
+    public function UserUtils(enforcer:SingletonEnforcer) {
         if (enforcer == null)
-            throw new Error("You Can Only Have One DataBase");
+            throw new Error("You Can Only Have One UserUtils");
     }
 
 
     //--------------------------------------------------------------------------
     //  Public methods
     //--------------------------------------------------------------------------
-    public static function getInstance():DataBase {
+    public static function getInstance():UserUtils {
         if (instance == null)
-            instance = new DataBase(new SingletonEnforcer);
+            instance = new UserUtils(new SingletonEnforcer);
 
         return instance;
     }
