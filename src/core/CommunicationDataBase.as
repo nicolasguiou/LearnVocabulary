@@ -67,7 +67,7 @@ public class CommunicationDataBase extends EventDispatcher {
     //		}
     private var loader:URLLoader;
 
-    function directoryListingHandler(event:FileListEvent):void {
+    private function directoryListingHandler(event:FileListEvent):void {
         var list:Array = event.files;
         for (var i:uint = 0; i < list.length; i++) {
             trace(list[i].nativePath);

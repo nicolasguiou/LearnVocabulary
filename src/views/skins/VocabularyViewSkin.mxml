@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Skin
         xmlns:fx="http://ns.adobe.com/mxml/2009"
-        xmlns:s="library://ns.adobe.com/flex/spark" xmlns:components="components.*">
+        xmlns:s="library://ns.adobe.com/flex/spark"
+        xmlns:components2="components.dropDownList.*"
+        xmlns:components="components.*">
 
     <fx:Metadata>
         [HostComponent("views.VocabularyView")]
@@ -44,15 +46,15 @@
     </s:Rect>
 
     <s:Image id="imgPlay"
-             horizontalCenter="250" top="28"
+             horizontalCenter="250" top="27"
              source="{EmbedAssets.PLAY}"/>
 
-    <s:DropDownList id="ddlDisplay"
-                    labelField="label"
-                    selectedIndex="0"
-                    horizontalCenter="-200" top="28"
-                    width="110" height="40"
-                    dataProvider="{dpDisplay}"/>
+    <components2:DropDownList id="ddlDisplay"
+                              labelField="label"
+                              selectedIndex="0"
+                              horizontalCenter="-250" top="25"
+                              width="150" height="66"
+                              dataProvider="{dpDisplay}"/>
 
     <s:VGroup width="100%" height="100%"
               horizontalAlign="center"

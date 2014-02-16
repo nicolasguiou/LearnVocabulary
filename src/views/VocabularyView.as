@@ -1,4 +1,6 @@
 package views {
+import components.dropDownList.DropDownList;
+
 import core.CommunicationDataBase;
 import core.CommunicationDropBox;
 import core.DataBase;
@@ -15,8 +17,6 @@ import mx.collections.ArrayCollection;
 import mx.events.FlexEvent;
 import mx.states.State;
 import mx.utils.Base64Decoder;
-
-import spark.components.DropDownList;
 
 import spark.components.Image;
 import spark.components.Label;
